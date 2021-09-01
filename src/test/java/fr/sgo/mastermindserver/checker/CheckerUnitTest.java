@@ -19,7 +19,7 @@ class CheckerUnitTest {
     void shouldThrowExceptionWhenWrongInput(List<Pawn> pawns) {
         Checker checker = new Checker(Pawn.RED, Pawn.RED, Pawn.RED, Pawn.RED, Pawn.RED);
 
-        assertThatThrownBy(() -> checker.check(pawns)).isExactlyInstanceOf(java.lang.Error.class);
+        assertThatThrownBy(() -> checker.check(pawns)).isExactlyInstanceOf(MastermindException.class);
     }
 
     @ParameterizedTest
@@ -28,7 +28,7 @@ class CheckerUnitTest {
         Checker checker = new Checker(Pawn.RED, Pawn.RED, Pawn.RED, Pawn.RED, Pawn.RED);
         List<Pawn> pawns = IntStream.range(0, size).mapToObj(index -> Pawn.RED).collect(Collectors.toList());
 
-        assertThatThrownBy(() -> checker.check(pawns)).isExactlyInstanceOf(java.lang.Error.class);
+        assertThatThrownBy(() -> checker.check(pawns)).isExactlyInstanceOf(MastermindException.class);
     }
 
     @ParameterizedTest

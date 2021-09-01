@@ -1,6 +1,7 @@
 package fr.sgo.mastermindserver.rest;
 
 import fr.sgo.mastermindserver.checker.GameService;
+import fr.sgo.mastermindserver.checker.MastermindException;
 import fr.sgo.mastermindserver.checker.Pawn;
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +33,7 @@ class MastermindResource {
         try {
             List<Pawn> pawns = colors.stream().map(Pawn::valueOf).collect(Collectors.toList());
             return ResponseEntity.ok(List.of(gameService.check(gameId, pawns)));
-        } catch (Error error) {
+        } catch (MastermindException error) {
             return ResponseEntity.badRequest().header("error", error.getMessage()).build();
         }
     }
