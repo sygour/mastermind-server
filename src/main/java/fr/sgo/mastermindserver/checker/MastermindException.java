@@ -3,7 +3,7 @@ package fr.sgo.mastermindserver.checker;
 public class MastermindException extends RuntimeException {
     private final String message;
 
-    MastermindException(String message) {
+    public MastermindException(String message) {
         this.message = message;
     }
 

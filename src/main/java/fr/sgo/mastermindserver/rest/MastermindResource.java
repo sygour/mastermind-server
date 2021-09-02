@@ -1,6 +1,6 @@
 package fr.sgo.mastermindserver.rest;
 
-import fr.sgo.mastermindserver.checker.GameService;
+import fr.sgo.mastermindserver.game.GameService;
 import fr.sgo.mastermindserver.checker.MastermindException;
 import fr.sgo.mastermindserver.checker.Pawn;
 import java.util.List;

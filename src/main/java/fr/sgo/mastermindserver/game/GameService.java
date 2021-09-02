@@ -1,5 +1,8 @@
-package fr.sgo.mastermindserver.checker;
+package fr.sgo.mastermindserver.game;
 
+import fr.sgo.mastermindserver.checker.Checker;
+import fr.sgo.mastermindserver.checker.MastermindException;
+import fr.sgo.mastermindserver.checker.Pawn;
 import fr.sgo.mastermindserver.rest.Game;
 import fr.sgo.mastermindserver.rest.PropositionResult;
 import java.util.Arrays;

@@ -1,5 +1,6 @@
-package fr.sgo.mastermindserver.checker;
+package fr.sgo.mastermindserver.game;
 
+import fr.sgo.mastermindserver.checker.Pawn;
 import java.util.Random;
 import org.springframework.stereotype.Service;
 

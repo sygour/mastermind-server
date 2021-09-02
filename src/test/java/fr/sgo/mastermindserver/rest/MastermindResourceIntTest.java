@@ -2,7 +2,7 @@ package fr.sgo.mastermindserver.rest;
 
 import static org.mockito.Mockito.*;
 
-import fr.sgo.mastermindserver.checker.GameService;
+import fr.sgo.mastermindserver.game.GameService;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

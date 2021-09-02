@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-class Checker {
+public class Checker {
     private final List<Pawn> solution;
 
     public Checker(Pawn pawn, Pawn... pawns) {
