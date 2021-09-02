@@ -25,7 +25,16 @@ class MastermindResourceIntTest {
     private WebTestClient webClient;
 
     @Test
+    void shouldNotGetGame() {
+        webClient.get().uri("/mastermind")
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
     void shouldGetGame() {
+        when(gameService.getCurrentGame()).thenReturn(mock(Game.class));
+
         webClient.get().uri("/mastermind")
                 .exchange()
                 .expectStatus().isOk();
@@ -33,10 +42,11 @@ class MastermindResourceIntTest {
 
     @Test
     void shouldPostSolution() {
-        when(gameService.check(any(), any())).thenReturn(mock(PropositionResult.class));
+        when(gameService.check(any(), any(), any())).thenReturn(mock(PropositionResult.class));
 
         webClient.post().uri("/mastermind/{id}/solutions", UUID.randomUUID())
                 .body(BodyInserters.fromValue(List.of()))
+                .header("player", UUID.randomUUID().toString())
                 .exchange()
                 .expectStatus().isOk();
     }

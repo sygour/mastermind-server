@@ -1,0 +1,24 @@
+### register player
+POST localhost:8080/mastermind/players
+
+### get current game
+GET localhost:8080/mastermind
+player: bfec8c63-9bf6-4709-83a2-dd5a8a6fa9bd
+
+### post solution
+POST localhost:8080/mastermind/b93490dc-45ec-4486-9e2d-5e6aca655d5e/solutions
+player: bfec8c63-9bf6-4709-83a2-dd5a8a6fa9bd
+Content-Type: application/json
+
+[
+  "BLUE"
+  ,"RED"
+  ,"GREEN"
+  ,"WHITE"
+  ,"RED"
+  ,"RED"
+  ,"RED"
+]
+
+### get players and scores
+GET localhost:8080/mastermind/players

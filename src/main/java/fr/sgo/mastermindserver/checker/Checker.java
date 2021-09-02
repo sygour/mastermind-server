@@ -19,6 +19,10 @@ public class Checker {
         solution = List.copyOf(pawns);
     }
 
+    public int getSize() {
+        return solution.size();
+    }
+
     public Result check(List<Pawn> pawns) {
         assertInput(pawns);
 
