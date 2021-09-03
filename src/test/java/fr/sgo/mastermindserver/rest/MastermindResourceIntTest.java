@@ -3,6 +3,7 @@ package fr.sgo.mastermindserver.rest;
 import static org.mockito.Mockito.*;
 
 import fr.sgo.mastermindserver.game.GameService;
+import fr.sgo.mastermindserver.game.Player;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,17 @@ class MastermindResourceIntTest {
     }
 
     @Test
+    void shouldRegisterPlayer() {
+        UUID id = UUID.randomUUID();
+        when(gameService.registerPlayer("coucou")).thenReturn(new Player(id, "coucou"));
+
+        webClient.post().uri("/mastermind/players?name=coucou")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody().json("[{\"id\":\"" + id +"\",\"name\":\"coucou\"}]");
+    }
+
+    @Test
     void shouldPostSolution() {
         when(gameService.check(any(), any(), any())).thenReturn(mock(PropositionResult.class));
 
@@ -49,5 +61,16 @@ class MastermindResourceIntTest {
                 .header("player", UUID.randomUUID().toString())
                 .exchange()
                 .expectStatus().isOk();
+    }
+
+    @Test
+    void shouldGetScores() {
+        UUID id = UUID.randomUUID();
+        when(gameService.getScores()).thenReturn(List.of(new PlayerScore(new Player(id, "coucou"), 12)));
+
+        webClient.get().uri("/mastermind/players")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody().json("[{\"id\":\"" + id +"\",\"name\":\"coucou\",\"score\":12}]");
     }
 }

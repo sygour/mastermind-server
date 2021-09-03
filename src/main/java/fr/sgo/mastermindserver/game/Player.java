@@ -1,17 +1,28 @@
 package fr.sgo.mastermindserver.game;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.Objects;
 import java.util.UUID;
 
+@JsonSerialize
 public class Player {
+    @JsonProperty
     private final UUID id;
+    @JsonProperty
+    private final String name;
 
-    public Player(UUID id) {
+    public Player(UUID id, String name) {
         this.id = Objects.requireNonNull(id);
+        this.name = Objects.requireNonNull(name);
     }
 
     public UUID getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

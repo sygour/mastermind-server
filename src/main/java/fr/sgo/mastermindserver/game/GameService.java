@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,11 @@ public class GameService {
         this.randomProvider = randomProvider;
     }
 
-    public Player registerPlayer() {
-        Player player = new Player(UUID.randomUUID());
+    public Player registerPlayer(String name) {
+        if (players.stream().map(Player::getName).anyMatch(Predicate.isEqual(name))) {
+            throw new MastermindException("player already exists: " + name);
+        }
+        Player player = new Player(UUID.randomUUID(), name);
         players.add(player);
         return player;
     }
@@ -66,10 +70,11 @@ public class GameService {
         return new Game(currentGame.getGameId(), currentGame.getChecker().getSize(), Arrays.stream(Pawn.values()).map(Enum::toString).collect(Collectors.toList()));
     }
 
-    public PropositionResult check(Player player, UUID gameId, List<Pawn> pawns) {
-        if (!players.contains(player)) {
-            throw new MastermindException("unknown player id");
-        }
+    public PropositionResult check(UUID playerId, UUID gameId, List<Pawn> pawns) {
+        Player player = players.stream()
+                .filter(p -> p.getId().equals(playerId))
+                .findFirst()
+                .orElseThrow(() -> new MastermindException("unknown player id"));
         if (!currentGame.getGameId().equals(gameId)) {
             throw new MastermindException("unknown game id, current game id: " + currentGame.getGameId());
         }
@@ -86,7 +91,7 @@ public class GameService {
             int score = gameResults.stream().map(gameResult -> gameResult.getResult(player))
                     .mapToInt(result -> result.filter(Result::isCorrect).map(r -> 10).orElse(-1))
                     .sum();
-            playerScores.add(new PlayerScore(player.getId(), score));
+            playerScores.add(new PlayerScore(player, score));
         });
         return playerScores;
     }

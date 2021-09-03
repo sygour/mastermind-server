@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/mastermind")
@@ -26,8 +27,8 @@ class MastermindResource {
     }
 
     @PostMapping("/players")
-    public ResponseEntity<List<Player>> register() {
-        return ResponseEntity.ok(List.of(gameService.registerPlayer()));
+    public ResponseEntity<List<Player>> register(@RequestParam("name") String name) {
+        return ResponseEntity.ok(List.of(gameService.registerPlayer(name)));
     }
 
     @GetMapping("/players")
@@ -48,7 +49,7 @@ class MastermindResource {
     public ResponseEntity<List<PropositionResult>> postProposition(@RequestHeader("player") UUID playerId, @PathVariable("id") UUID gameId, @RequestBody List<String> colors) {
         try {
             List<Pawn> pawns = colors.stream().map(Pawn::valueOf).collect(Collectors.toList());
-            return ResponseEntity.ok(List.of(gameService.check(new Player(playerId), gameId, pawns)));
+            return ResponseEntity.ok(List.of(gameService.check(playerId, gameId, pawns)));
         } catch (MastermindException error) {
             return ResponseEntity.badRequest().header("error", error.getMessage()).build();
         }
