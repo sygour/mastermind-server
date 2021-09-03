@@ -1,0 +1,60 @@
+<h2>Mastermind</h2>
+
+<p>
+    You all know this game: find the combination the master has chosen.
+</p>
+
+<p>
+    The specificity, here, is that a new game is start regularly, if you found the combination you own points, otherwise you loose some.
+</p>
+
+<h3>API Description</h3>
+
+<h4>Registering as a player</h4>
+<p>
+<pre>POST /mastermind/players?name=&lt;YOUR_TEAM&gt;</pre>
+</p>
+<p>
+<pre>[{
+  "id": your_unique_id,
+  "name": YOUR_TEAM
+}]</pre>
+</p>
+<p><b>NB: </b>keep this id, as you'll need it later on.</p>
+
+<h4>Getting current game settings</h4>
+<p><pre>GET /mastermind</pre></p>
+<p><pre>{
+  "id": current_game_id,
+  "size": number_of_pawns_in_game
+  "colors": [
+    available_color_1,
+    ...,
+    available_color_n
+  ]
+}</pre></p>
+
+<h4>Proposing a solution</h4>
+<p>
+<pre>POST /mastermind/{current_game_id}/solutions
+player: your_unique_id
+
+[
+  pawn_color_1,
+  ...,
+  pawn_color_m,
+]</pre>
+</p>
+In case of error, an empty body is return and header "error" contains the error message.
+<p>
+<pre>[
+  {
+    "result": [
+      "MISS_PLACED",
+      "INCORRECT",
+      ...
+      "CORRECT",
+    ]
+  }
+]</pre>
+</p>
