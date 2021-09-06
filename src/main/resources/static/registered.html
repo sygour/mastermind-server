@@ -1,0 +1,44 @@
+<h2>Mastermind</h2>
+
+<p>
+  Once you registered and the game is started, a whole new world opens!
+</p>
+
+<h3>API Description</h3>
+
+<h4>Getting current game settings</h4>
+<p><pre>GET /mastermind</pre></p>
+<p><pre>{
+  "id": current_game_id,
+  "size": number_of_pawns_in_game
+  "colors": [
+    available_color_1,
+    ...,
+    available_color_n
+  ]
+}</pre></p>
+
+<h4>Proposing a solution</h4>
+<p>
+<pre>POST /mastermind/{current_game_id}/solutions
+player: your_unique_id
+
+[
+  pawn_color_1,
+  ...,
+  pawn_color_m,
+]</pre>
+</p>
+In case of error, an empty body is return and header "error" contains the error message.
+<p>
+<pre>[
+  {
+    "result": [
+      "MISS_PLACED",
+      "INCORRECT",
+      ...
+      "CORRECT",
+    ]
+  }
+]</pre>
+</p>
