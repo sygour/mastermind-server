@@ -1,5 +1,14 @@
+### setup
+POST localhost:8080/mastermind?players=3
+
 ### register player
-POST localhost:8080/mastermind/players
+POST localhost:8080/mastermind/players?name="tata"
+
+### register player
+POST localhost:8080/mastermind/players?name="titi"
+
+### register player
+POST localhost:8080/mastermind/players?name="toto"
 
 ### get current game
 GET localhost:8080/mastermind

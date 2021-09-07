@@ -28,14 +28,32 @@ public class GameService {
     private final RandomProvider randomProvider;
 
     private GameResult currentGame;
+    private int playerCount;
 
     public GameService(RandomProvider randomProvider) {
         this.randomProvider = randomProvider;
     }
 
+    private void assertIsSetUp() {
+        if (playerCount <= 0) {
+            throw new MastermindException("game is not setup");
+        }
+    }
+
+    private void assertIsReady() {
+        assertIsSetUp();
+        if (players.size() < playerCount) {
+            throw new MastermindException("game is not ready");
+        }
+    }
+
     public Player registerPlayer(String name) {
+        assertIsSetUp();
         if (players.stream().map(Player::getName).anyMatch(Predicate.isEqual(name))) {
             throw new MastermindException("player already exists: " + name);
+        }
+        if (players.size() >= playerCount) {
+            throw new MastermindException("maximum number of players reached");
         }
         Player player = new Player(UUID.randomUUID(), name);
         players.add(player);
@@ -43,6 +61,7 @@ public class GameService {
     }
 
     void create() {
+        assertIsReady();
         storeCurrentGame();
         createNewGame();
     }
@@ -64,6 +83,7 @@ public class GameService {
     }
 
     public Game getCurrentGame() {
+        assertIsSetUp();
         if (currentGame == null) {
             return null;
         }
@@ -71,6 +91,7 @@ public class GameService {
     }
 
     public PropositionResult check(UUID playerId, UUID gameId, List<Pawn> pawns) {
+        assertIsSetUp();
         Player player = players.stream()
                 .filter(p -> p.getId().equals(playerId))
                 .findFirst()
@@ -85,14 +106,19 @@ public class GameService {
     }
 
     public List<PlayerScore> getScores() {
+        assertIsSetUp();
         ArrayList<PlayerScore> playerScores = new ArrayList<>();
         Collection<GameResult> gameResults = games.values();
         players.forEach(player -> {
-            int score = gameResults.stream().map(gameResult -> gameResult.getResult(player))
-                    .mapToInt(result -> result.filter(Result::isCorrect).map(r -> 10).orElse(-1))
+            int score = gameResults.stream()
+                    .mapToInt(gameResult -> gameResult.getResult(player))
                     .sum();
             playerScores.add(new PlayerScore(player, score));
         });
         return playerScores;
+    }
+
+    public void setup(int playerCount) {
+        this.playerCount = playerCount;
     }
 }

@@ -36,6 +36,12 @@ class MastermindResource {
         return ResponseEntity.ok(gameService.getScores());
     }
 
+    @PostMapping
+    public ResponseEntity<Void> setup(@RequestParam("players") int playerCount) {
+        gameService.setup(playerCount);
+        return ResponseEntity.accepted().build();
+    }
+
     @GetMapping
     public ResponseEntity<Game> getGame() {
         Game currentGame = gameService.getCurrentGame();

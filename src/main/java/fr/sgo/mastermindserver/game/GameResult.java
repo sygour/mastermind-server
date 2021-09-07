@@ -2,15 +2,14 @@ package fr.sgo.mastermindserver.game;
 
 import fr.sgo.mastermindserver.checker.Checker;
 import fr.sgo.mastermindserver.checker.Result;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 class GameResult {
     private final UUID gameId;
     private final Checker checker;
-    private final Map<Player, Result> results = new HashMap<>();
+    private final List<Player> podium = new ArrayList<>();
 
     GameResult(UUID gameId, Checker checker) {
         this.gameId = gameId;
@@ -26,10 +25,19 @@ class GameResult {
     }
 
     public void setResult(Player player, Result result) {
-        results.put(player, result);
+        if (result.isCorrect() && !podium.contains(player)) {
+            podium.add(player);
+        }
     }
 
-    public Optional<Result> getResult(Player player) {
-        return Optional.ofNullable(results.get(player));
+    public int getResult(Player player) {
+        int position = podium.indexOf(player);
+        switch (position) {
+            case -1: return -1;
+            case 0: return 5;
+            case 1: return 3;
+            case 2: return 2;
+            default: return 0;
+        }
     }
 }

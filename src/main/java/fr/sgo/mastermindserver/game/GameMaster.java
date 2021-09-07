@@ -1,5 +1,6 @@
 package fr.sgo.mastermindserver.game;
 
+import fr.sgo.mastermindserver.checker.MastermindException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,6 +19,10 @@ class GameMaster {
     @Scheduled(fixedRate = ONE_MINUTE)
     public void createNewGame() {
         LOGGER.info("Creating new game");
-        gameService.create();
+        try {
+            gameService.create();
+        } catch (MastermindException exception) {
+            LOGGER.warn(exception.getMessage());
+        }
     }
 }
